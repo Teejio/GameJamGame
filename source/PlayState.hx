@@ -22,6 +22,7 @@ class PlayState extends FlxState
 	{
 		super.create();
 
+		Application.current.window.borderless = true;
 		GAMECAM = new FlxCamera();
 		HUDCAM = new FlxCamera();
 		PAUSECAM = new FlxCamera();
@@ -41,7 +42,7 @@ class PlayState extends FlxState
 
 		var dickhead = new FlxSprite(player.x,player.y).makeGraphic(100,100, FlxColor.WHITE);
 		add(dickhead);
-		//GAMECAM.follow(player, 1);
+		GAMECAM.follow(player, 1);
 
 		gameWidth = Application.current.window.display.bounds.width;
 		gameHeight = Application.current.window.display.bounds.height;
@@ -55,20 +56,22 @@ class PlayState extends FlxState
 
 
 
-		
-		GAMECAM.scroll.x = player.x;
-		GAMECAM.scroll.y = player.y;
-
+	
 		//player.x = Math.round( player.x);
 		//player.y = Math.round( player.y);
 		super.update(elapsed);
 
-		Application.current.window.x = Std.int((gameWidth/-2) + player.x);
+		Application.current.window.x = Std.int((gameWidth/-2) +player.x);
 		
-		Application.current.window.y = Std.int((gameHeight/-2) + player.y);
+		Application.current.window.y = Std.int((gameHeight/-2) + player.y );
 
 
 		trace(Application.current.window.x);
+
+		if (FlxG.keys.anyPressed([X, ESCAPE])) {
+
+			Application.current.window.close();
+		}
 	}
 
 	override public function draw()

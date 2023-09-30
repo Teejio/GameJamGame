@@ -25,7 +25,7 @@ class Paths {
 			return pathName + '/' + name;
         }
         else{
-			
+			return 'assets/' + name;
 		}
 
         

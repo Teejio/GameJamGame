@@ -5,16 +5,16 @@ import flixel.FlxSprite;
 class Player extends FlxSprite{
 
 
-    var movement:Int = 0;
-    var movementy:Int = 0;
+    var movement:Float = 0;
+    var movementy:Float = 0;
     public function new(x:Float, y:Float)
         {
 
             super(x,y);
 
-            drag.x = 800;
+          //  drag.x = 700;
 
-            drag.y = 600;
+         //   drag.y = 700;
             makeGraphic(100,100, FlxColor.GREEN);
             centerOffsets();
             updateHitbox();
@@ -47,8 +47,26 @@ class Player extends FlxSprite{
                 movementy += 1;
             }
 
-            velocity.x += movement * 1000 * elapsed;
-            velocity.y += movementy * 1000 * elapsed;
+
+
+            color = FlxColor.WHITE;
+            if (FlxG.keys.anyPressed([SPACE])) {
+
+                movementy *= 3.5;
+                movement *= 3.5;
+                color = FlxColor.ORANGE;
+            }
+
+            if ((movement != 0 ) && (movementy != 0 )){
+
+                movement *= 0.8;
+                movementy *= 0.8;
+            }
+            velocity.x += movement * 1300 * elapsed;
+            velocity.y += movementy * 1300 * elapsed;
+
+            velocity.x *= 0.96;
+            velocity.y *= 0.96;
 
    
         }

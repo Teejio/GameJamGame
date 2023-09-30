@@ -7,6 +7,8 @@ class Player extends FlxSprite
 	var movement:Float = 0;
 	var movementy:Float = 0;
 
+
+	public var isSpeeding:Bool = false;
 	public function new(x:Float, y:Float)
 	{
 		super(x, y);
@@ -43,8 +45,10 @@ class Player extends FlxSprite
 		}
 
 		color = FlxColor.WHITE;
+		isSpeeding = false;
 		if (FlxG.keys.anyPressed([SPACE]))
 		{
+			isSpeeding = true;
 			movementy *= 3.5;
 			movement *= 3.5;
 			color = FlxColor.ORANGE;

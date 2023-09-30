@@ -5,6 +5,9 @@ import flixel.FlxCamera;
 import flixel.math.FlxMath;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
+import flixel.group.FlxSpriteGroup;
+import flixel.FlxObject;
+
 
 import openfl.utils.Assets;
 

@@ -1,6 +1,7 @@
 package;
 
 import Player;
+import Simple;
 import flash.display.Sprite;
 import flash.display.Stage;
 import flash.geom.Rectangle;
@@ -11,7 +12,7 @@ import tjson.TJSON as Tjson;
 
 class PlayState extends FlxState
 {
-	public var player:Player;
+	public static var player:Player;
 	public var Simple:Simple;
 
 	public static var level:Int = 0;
@@ -23,6 +24,8 @@ class PlayState extends FlxState
 	var gameWidth:Float;
 	var gameHeight:Float;
 
+	public static var enemyGroup:FlxTypedSpriteGroup<Dynamic>;
+
 	var targetwidth:Float;
 
 	public static var hehe:Application;
@@ -31,9 +34,16 @@ class PlayState extends FlxState
 
 	var hudWindow:Window;
 
+	
+
 	override public function create()
 	{
 		super.create();
+
+		enemyGroup = new FlxTypedSpriteGroup<Dynamic>(100);
+
+		add(enemyGroup);
+
 		stage = new Stage(Application.current.window, FlxColor.BLUE);
 		targetwidth = Std.int(1920);
 
@@ -78,7 +88,7 @@ class PlayState extends FlxState
 		{
 			var dickhead = new Simple(item[0] * scaleX, item[1] * scaleY);
 			// dickhead.pixelPerfectRender = true;
-			add(dickhead);
+			enemyGroup.add(dickhead);
 		}
 
 		parsedata = leveldata.enemies.turret;
@@ -86,7 +96,7 @@ class PlayState extends FlxState
 		{
 			var dickhead = new FlxSprite(item[0] * scaleX, item[1] * scaleY).makeGraphic(80, 80, FlxColor.BROWN);
 			// dickhead.pixelPerfectRender = true;
-			add(dickhead);
+			enemyGroup.add(dickhead);
 		}
 
 		parsedata = leveldata.enemies.archer;
@@ -94,7 +104,7 @@ class PlayState extends FlxState
 		{
 			var dickhead = new FlxSprite(item[0] * scaleX, item[1] * scaleY).makeGraphic(80, 80, FlxColor.PURPLE);
 			// dickhead.pixelPerfectRender = true;
-			add(dickhead);
+			enemyGroup.add(dickhead);
 		}
 
 		GAMECAM.follow(player, TOPDOWN, 0.3);
@@ -167,7 +177,7 @@ class PlayState extends FlxState
 			hudWindow.close();
 			Application.current.window.close();
 		}
-		trace(player.y);
+		trace(player.isSpeeding);
 	}
 
 	override public function draw()

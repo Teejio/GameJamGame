@@ -7,8 +7,12 @@ class Player extends FlxSprite
 	var movement:Float = 0;
 	var movementy:Float = 0;
 
+	public var hp = 3;
+
+	public var invincibilityFrames:Float = 2;
 
 	public var isSpeeding:Bool = false;
+
 	public function new(x:Float, y:Float)
 	{
 		super(x, y);
@@ -19,12 +23,17 @@ class Player extends FlxSprite
 		makeGraphic(100, 100, FlxColor.GREEN);
 		centerOffsets();
 		updateHitbox();
+		health = 3;
 	}
 
 	override public function update(elapsed:Float)
 	{
+		trace(health, invincibilityFrames);
+
 		movement = 0;
 		movementy = 0;
+
+		trace(health);
 
 		if (FlxG.keys.anyPressed([A, LEFT]))
 		{
@@ -65,6 +74,17 @@ class Player extends FlxSprite
 		velocity.x *= 0.96;
 		velocity.y *= 0.96;
 
+		if (invincibilityFrames > 0)
+		{
+			color = FlxColor.GRAY;
+		}
+		else
+		{
+			color = FlxColor.WHITE;
+		}
+
 		super.update(elapsed);
+
+		invincibilityFrames = invincibilityFrames - elapsed;
 	}
 }

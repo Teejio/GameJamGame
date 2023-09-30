@@ -13,6 +13,7 @@ import tjson.TJSON as Tjson;
 class PlayState extends FlxState
 {
 	public static var player:Player;
+
 	public var Simple:Simple;
 
 	public static var level:Int = 0;
@@ -33,8 +34,6 @@ class PlayState extends FlxState
 	var stage:Stage;
 
 	var hudWindow:Window;
-
-	
 
 	override public function create()
 	{
@@ -89,6 +88,7 @@ class PlayState extends FlxState
 			var dickhead = new Simple(item[0] * scaleX, item[1] * scaleY);
 			// dickhead.pixelPerfectRender = true;
 			enemyGroup.add(dickhead);
+			dickhead.cameras = [GAMECAM];
 		}
 
 		parsedata = leveldata.enemies.turret;
@@ -177,7 +177,7 @@ class PlayState extends FlxState
 			hudWindow.close();
 			Application.current.window.close();
 		}
-		trace(player.isSpeeding);
+		// trace(player.isSpeeding);
 	}
 
 	override public function draw()

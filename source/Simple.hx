@@ -18,36 +18,34 @@ class Simple extends FlxSprite
 
 		drag.y = 700;
 
-
-		makeGraphic(80 + Std.int((Math.random() * 10)-5), 80, FlxColor.RED);
+		makeGraphic(80 + Std.int((Math.random() * 10) - 5), 80, FlxColor.RED);
 		centerOffsets();
 		updateHitbox();
 	}
 
 	override public function update(elapsed:Float)
 	{
-
-		
-	
-		
-		if (PlayState.player != null){
+		if (PlayState.player != null)
+		{
 			FlxVelocity.moveTowardsObject(this, PlayState.player, moveSpeed);
 			FlxG.collide(this, PlayState.enemyGroup);
-
-			
 		}
-
-	
 
 		super.update(elapsed);
 
 		if (FlxG.overlap(this, PlayState.player))
 		{
-			//var speed = (Math.abs(PlayState.player.velocity.x) > Math.abs(PlayState.player.velocity.y)) ? Math.abs(PlayState.player.velocity.x) : Math.abs(PlayState.player.velocity.y);
+			// var speed = (Math.abs(PlayState.player.velocity.x) > Math.abs(PlayState.player.velocity.y)) ? Math.abs(PlayState.player.velocity.x) : Math.abs(PlayState.player.velocity.y);
 
-			if ( PlayState.player.isSpeeding)
+			if (PlayState.player.isSpeeding)
 			{
 				this.kill();
+			}
+			else if (PlayState.player.invincibilityFrames < 0)
+			{
+				trace("get hurt");
+				PlayState.player.hurt(1);
+				PlayState.player.invincibilityFrames = 2;
 			}
 		}
 	}

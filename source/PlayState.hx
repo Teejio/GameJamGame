@@ -51,14 +51,14 @@ class PlayState extends FlxState
 		//FlxG.cameras.add(HUDCAM, false);
 		FlxG.cameras.add(PAUSECAM, false);
 
-		GAMECAM.zoom = FlxG.width/targetwidth;
+		GAMECAM.zoom = FlxG.width/(targetwidth/2);
 	
 		GAMECAM.antialiasing = true;
 
 		player = new Player(0,0);
 		add(player);
 
-
+		//player.pixelPerfectRender = true;
 		
 
 
@@ -74,7 +74,7 @@ class PlayState extends FlxState
 		for(item in parsedata){
 
 			var dickhead = new FlxSprite(item[1] * scaleX, item[2]* scaleY).makeGraphic(item[0], item[0], FlxColor.GRAY);
-			dickhead.pixelPerfectRender = true;
+			//dickhead.pixelPerfectRender = true;
 			add(dickhead);
 
 		}
@@ -83,7 +83,7 @@ class PlayState extends FlxState
 		for(item in parsedata){
 
 			var dickhead = new FlxSprite(item[0] * scaleX, item[1]* scaleY).makeGraphic(80, 80, FlxColor.RED);
-			dickhead.pixelPerfectRender = true;
+			//dickhead.pixelPerfectRender = true;
 			add(dickhead);
 
 		}
@@ -92,7 +92,7 @@ class PlayState extends FlxState
 		for(item in parsedata){
 
 			var dickhead = new FlxSprite(item[0] * scaleX , item[1]* scaleY).makeGraphic(80, 80, FlxColor.BROWN);
-			dickhead.pixelPerfectRender = true;
+			//dickhead.pixelPerfectRender = true;
 			add(dickhead);
 
 		}
@@ -101,14 +101,16 @@ class PlayState extends FlxState
 		for(item in parsedata){
 
 			var dickhead = new FlxSprite(item[0] * scaleX, item[1]* scaleY).makeGraphic(80, 80, FlxColor.PURPLE);
-			dickhead.pixelPerfectRender = true;
+			//dickhead.pixelPerfectRender = true;
 			add(dickhead);
 
 		}
 
-		GAMECAM.follow(player, FlxCameraFollowStyle.NO_DEAD_ZONE);
-		GAMECAM.minScrollX = -1920;
-		GAMECAM.maxScrollX = 1920;
+		GAMECAM.follow(player,  TOPDOWN, 0.3);
+		GAMECAM.minScrollX = -targetwidth;
+		GAMECAM.maxScrollX = targetwidth;
+
+		GAMECAM.pixelPerfectRender = true;
 
 		GAMECAM.minScrollY = -stage.fullScreenHeight * 1.2;
 		GAMECAM.maxScrollY = stage.fullScreenHeight * 1.2;

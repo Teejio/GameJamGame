@@ -24,7 +24,7 @@ class Player extends FlxSprite{
 
         override public function update(elapsed:Float) {
 
-            super.update(elapsed);
+           
 
             movement = 0;
             movementy = 0;
@@ -68,6 +68,7 @@ class Player extends FlxSprite{
             velocity.x *= 0.96;
             velocity.y *= 0.96;
 
+            super.update(elapsed);
    
         }
 }

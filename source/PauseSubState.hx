@@ -16,6 +16,14 @@ class PauseSubState extends FlxSubState {
 
     var time = 1;
 
+
+	var timer:Float = 0;
+
+	var astro:FlxSprite;
+
+
+
+
     var easeFunc = FlxEase.expoOut;
     override public function create() {
 
@@ -30,6 +38,16 @@ class PauseSubState extends FlxSubState {
         
         add(bg);
 
+
+		astro = new FlxSprite(FlxG.width, 0).loadGraphic(Paths.image("Astro"));
+
+		add(astro);
+
+		astro.scale.x = astro.scale.y = 0.35;
+
+		astro.updateHitbox();
+		astro.screenCenter(Y);
+		astro.y += 100;
 
 		var cont = new CustomButton(50, 100 , 100, 40, "Continue", function()
 		{
@@ -72,5 +90,25 @@ class PauseSubState extends FlxSubState {
 		FlxTween.tween(exit, {y: 260, x: 100}, time * 1.2, {ease: easeFunc});
 		FlxTween.tween(close, {y: 330, x: 125}, time * 1.3, {ease: easeFunc});
 
+		FlxTween.tween(astro, {x: FlxG.width - 300}, 1.0, {ease: FlxEase.expoOut});
+
     }
+
+	override public function update(elapsed:Float)
+		{
+			super.update(elapsed);
+	
+			timer += elapsed;
+	
+			astro.angle += elapsed * 3.7;
+	
+
+			
+			if (timer > 1.0)
+			{
+				astro.x = FlxG.width - 300;
+				astro.x += Math.sin(timer - 3) * 30;
+
+			}
+		}
 }

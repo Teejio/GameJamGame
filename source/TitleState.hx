@@ -2,6 +2,7 @@ package;
 
 import CustomButton;
 import PlayState;
+import TutorialState;
 import lime.app.Application;
 
 class TitleState extends FlxState
@@ -49,17 +50,17 @@ class TitleState extends FlxState
 
 		add(start);
 
-		var tutorial = new CustomButton(0, FlxG.height + 300, 99, 40, "How to Play");
+		var tutorial = new CustomButton(0, FlxG.height + 300, 99, 40, "How to Play",  function()
+		{
+			FlxG.switchState(new TutorialState());
+		});
 
 		add(tutorial);
 
-		var setting = new CustomButton(0, FlxG.height + 400, 101, 40, "Settings", function (){
+		var close = new CustomButton(0, FlxG.height + 500, 101, 40, "Close Game", function (){
 			Application.current.window.close();
 		});
 
-		add(setting);
-
-		var close = new CustomButton(0, FlxG.height + 500, 98, 40, "Exit Game");
 
 		add(close);
 
@@ -68,7 +69,7 @@ class TitleState extends FlxState
 
 		FlxTween.tween(start, {y: 200, x: 25}, time, {ease: easeFunc});
 		FlxTween.tween(tutorial, {y: 265, x: 50}, time, {ease: easeFunc, startDelay: 0.1});
-		FlxTween.tween(setting, {y: 330, x: 75}, time, {ease: easeFunc, startDelay: 0.2});
+		//FlxTween.tween(setting, {y: 330, x: 75}, time, {ease: easeFunc, startDelay: 0.2});
 		FlxTween.tween(close, {y: 395, x: 100}, time, {ease: easeFunc, startDelay: 0.3});
 	}
 

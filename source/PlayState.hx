@@ -6,6 +6,7 @@ import flash.geom.Rectangle;
 import flixel.FlxState;
 import flixel.addons.ui.FlxUIBar as FlxBar;
 import flixel.effects.particles.FlxEmitter;
+import Effect;
 import game.Player;
 import game.enemy.Archer;
 import game.enemy.Enemy;
@@ -14,6 +15,7 @@ import game.enemy.Turret;
 import lime.app.Application;
 import lime.ui.Window;
 import tjson.TJSON as Tjson;
+using flixel.util.FlxSpriteUtil;
 
 class PlayState extends FlxState
 {
@@ -46,21 +48,31 @@ class PlayState extends FlxState
 	var stage:Stage;
 
 	var levelTxt:FlxText;
-	var hudWindow:Window;
+	public var hudWindow:Window;
 
 	public static var boostper:Float = 5;
 
 	public static var instance:PlayState;
 
+
+	var cameraCopySprite:FlxSprite;
+	var hudGroup:Array<Dynamic> = [];
+
+
 	override public function create()
 	{
 		super.create();
 
+		cameraCopySprite = new FlxSprite(0, 0);
+		cameraCopySprite.makeGraphic(500, 150, 0, true);
 		instance = this;
 
 		boostper = 5;
 		stage = new Stage(Application.current.window, FlxColor.BLUE);
 		targetwidth = Std.int(1920);
+
+		FlxG.sound.playMusic("assets/music/mus_fullroom.mp3", 1, true);
+
 
 		Application.current.window.borderless = true;
 		GAMECAM = new FlxCamera();
@@ -128,19 +140,25 @@ class PlayState extends FlxState
 			enemyGroup.add(dickhead);
 		}
 
-		levelTxt = new FlxText(0, 0, 0, "Level " + Std.string(level), 15);
+		levelTxt = new FlxText(0, 10, 0, "Level " + Std.string(level), 15);
 		levelTxt.cameras = [HUDCAM];
-		// levelTxt.x = 250 - (levelTxt.width/2);
+		levelTxt.x = 250 - (levelTxt.width/2);
 		levelTxt.color = FlxColor.WHITE;
 
-		// add(levelTxt);
+		add(levelTxt);
 
-		boostBar = new FlxSprite(0, 0).makeGraphic(480, 20, FlxColor.PURPLE);
+		boostBar = new FlxSprite( 10, 40).makeGraphic(480, 15, FlxColor.PURPLE);
+
+		var boostBarBG = new FlxSprite(5, 35).makeGraphic(490, 25, FlxColor.BLACK);
 
 		boostBar.cameras = [HUDCAM];
+		boostBarBG.cameras = [HUDCAM];
 
+		add(boostBarBG);
 		add(boostBar);
 
+		//hudGroup.push(levelTxt);
+		//hudGroup.push(boostBar);
 		FlxG.camera.follow(player, TOPDOWN, 0.3);
 		FlxG.camera.minScrollX = -targetwidth;
 		FlxG.camera.maxScrollX = targetwidth;
@@ -151,6 +169,8 @@ class PlayState extends FlxState
 		FlxG.camera.maxScrollY = stage.fullScreenHeight * 1.2;
 		gameWidth = Application.current.window.display.bounds.width;
 		gameHeight = Application.current.window.display.bounds.height;
+
+		HUDCAM.alpha = 0.0005;
 	}
 
 	var frame = 0;
@@ -160,7 +180,9 @@ class PlayState extends FlxState
 		// player.x = Math.round( player.x);
 		// player.y = Math.round( player.y);
 
-		boostBar.makeGraphic(Std.int(480 * (boostper / 5)), 20, FlxColor.PURPLE);
+		boostBar.scale.x = boostper/5;
+		boostBar.updateHitbox();
+
 		if (frame == 3)
 		{
 			hudWindow = Application.current.createWindow({
@@ -185,7 +207,7 @@ class PlayState extends FlxState
 			drawHud();
 
 			hudWindow.stage.addChild(spr_levelTxt);
-			hudWindow.stage.addChild(spr_BoostBar);
+		//	hudWindow.stage.addChild(spr_BoostBar);
 		}
 		else if (frame > 3)
 		{
@@ -204,12 +226,11 @@ class PlayState extends FlxState
 
 		if (FlxG.keys.anyPressed([X, ESCAPE]))
 		{
-			hudWindow.close();
-			Application.current.window.close();
+			openSubState(new PauseSubState());
 		}
 		// trace(boostBar.scale.x);
 
-		drawHud();
+		//drawHud();
 	}
 
 	override public function draw()
@@ -217,9 +238,9 @@ class PlayState extends FlxState
 		super.draw();
 	}
 
-	public function emitParticle(x:Float, y:Float, color:Int, ?time:Float = 1)
+	public function emitParticle(x:Float, y:Float, color:Int, ?time:Float = 1):Effect
 	{
-		var particles = new FlxEmitter(x, y, 20);
+		var particles = new Effect(x, y, 20);
 
 		particles.lifespan.set(0.1, time);
 		particles.lifespan.active = true;
@@ -229,28 +250,29 @@ class PlayState extends FlxState
 		particles.alpha.set(1, 0.8, 0, 0);
 
 		particles.start(true);
-		instance.add(particles);
+
+		return particles;
+		//instance.add(particles);
 	}
 
 	function drawHud()
 	{
-		var rect = new Rectangle(HUDCAM.x, HUDCAM.y, HUDCAM.width, HUDCAM.height);
 
-		spr_levelTxt = new Sprite();
-		spr_BoostBar = new Sprite();
-		var rect = new Rectangle(levelTxt.x, levelTxt.y, levelTxt.width, levelTxt.height);
 
+
+	//	trace(frame);
+		cameraCopySprite.fill(0);
+		cameraCopySprite.pixels.draw(HUDCAM.canvas);
+		  
+		var rect = new Rectangle(cameraCopySprite.x, cameraCopySprite.y, cameraCopySprite.width, cameraCopySprite.height);
+		spr_levelTxt.graphics.clear();
 		spr_levelTxt.scrollRect = rect;
-		spr_levelTxt.x = 250 - (levelTxt.width / 2);
+		spr_levelTxt.x = 0;
 		spr_levelTxt.y = 0;
-		spr_levelTxt.graphics.beginBitmapFill(levelTxt.pixels);
-		spr_levelTxt.graphics.drawRect(0, 0, levelTxt.pixels.width, levelTxt.pixels.height);
+		spr_levelTxt.graphics.beginBitmapFill(cameraCopySprite.pixels);
+		spr_levelTxt.graphics.drawRect(0, 0, cameraCopySprite.pixels.width, cameraCopySprite.pixels.height);
 		spr_levelTxt.graphics.endFill();
 
-		spr_BoostBar.scrollRect = rect;
-		spr_BoostBar.y = 10;
-		spr_BoostBar.graphics.beginBitmapFill(boostBar.pixels);
-		spr_BoostBar.graphics.drawRect(0, 0, Std.int(480 * (boostper / 5)), 20);
-		spr_BoostBar.graphics.endFill();
+
 	}
 }

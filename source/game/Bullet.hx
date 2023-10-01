@@ -46,4 +46,11 @@ class Bullet extends FlxSprite {
     }
 
 
+    override public function destroy(){
+		PlayState.instance.remove(this, true);
+
+        super.destroy();
+    }
+
+
 }

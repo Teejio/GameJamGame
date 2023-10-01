@@ -43,7 +43,7 @@ class CustomButton extends FlxUIButton{
         buttonIcon.drawFrame(true);
 
         
-        instance.loadGraphic(Paths.image("button"));
+        loadGraphic(Paths.image("button"));
 		instance.scale.x = instance.scale.y = scales;
         instance.updateHitbox();
         alpha =  0.7;

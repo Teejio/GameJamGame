@@ -57,14 +57,14 @@ class Archer extends Enemy
 	
 
 
-	override public function destroy()
+	override public function kill()
 	{
 		if (tween != null)
 		{
 			tween.cancel();
 		}
 
-		super.destroy();
+		super.kill();
 	}
 	
 	

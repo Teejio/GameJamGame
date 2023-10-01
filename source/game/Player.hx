@@ -23,13 +23,13 @@ class Player extends FlxSprite
 		makeGraphic(100, 100, FlxColor.GREEN);
 		centerOffsets();
 		updateHitbox();
-		health = 3;
+		hp = 3;
 	}
 
 	override public function update(elapsed:Float)
 	{
 		// trace(health, invincibilityFrames);
-
+		super.update(elapsed);
 		movement = 0;
 		movementy = 0;
 
@@ -64,7 +64,7 @@ class Player extends FlxSprite
 				isSpeeding = true;
 				movementy *= 3.5;
 				movement *= 3.5;
-				color = FlxColor.ORANGE;
+				//color = FlxColor.ORANGE;
 				PlayState.boostper -= 1.2 * elapsed;
 			}
 		}
@@ -92,13 +92,13 @@ class Player extends FlxSprite
 			color = FlxColor.WHITE;
 		}
 
-		super.update(elapsed);
+	
 
 		invincibilityFrames = invincibilityFrames - elapsed;
 	}
 
-	public function hurtMe()
-	{
+
+	public function hurtMe(){
 		if (invincibilityFrames < 0)
 		{
 			trace("get hurt");

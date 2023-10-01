@@ -37,7 +37,7 @@ class Enemy extends FlxSprite
 			{
 				PlayState.boostper = 5;
 
-				this.destroy();
+				this.kill();
 			}
 			else
 			{
@@ -46,8 +46,11 @@ class Enemy extends FlxSprite
 		}
 	}
 
-	override public function destroy()
+	override public function kill()
 	{
+
+		PlayState.instance.remove(this,true);
+		PlayState.enemyGroup.remove(this,true);
 		if (this != null)
 		{
 			PlayState.instance.emitParticle(x + width, y + width, FlxColor.GREEN, 1);
@@ -55,6 +58,6 @@ class Enemy extends FlxSprite
 
 		PlayState.player.invincibilityFrames = 0.1;
 		// PlayState.enemyGroup.remove(this);
-		super.destroy();
+		super.kill();
 	}
 }

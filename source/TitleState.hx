@@ -2,6 +2,7 @@ package;
 
 import CustomButton;
 import PlayState;
+import lime.app.Application;
 
 class TitleState extends FlxState
 {
@@ -18,10 +19,7 @@ class TitleState extends FlxState
 	{
 		super.create();
 
-		if (FlxG.sound.music == null) // don't restart the music if it's already playing
-		{
-			FlxG.sound.playMusic("assets/music/mus_mainmenu.wav", 1, true);
-		}
+		FlxG.sound.playMusic("assets/music/mus_mainmenu.wav", 1, true);
 
 		FlxG.camera.bgColor = 0xff1a0d50;
 
@@ -55,7 +53,9 @@ class TitleState extends FlxState
 
 		add(tutorial);
 
-		var setting = new CustomButton(0, FlxG.height + 400, 101, 40, "Settings");
+		var setting = new CustomButton(0, FlxG.height + 400, 101, 40, "Settings", function (){
+			Application.current.window.close();
+		});
 
 		add(setting);
 

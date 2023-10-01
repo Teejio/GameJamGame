@@ -61,7 +61,7 @@ class Turret extends Enemy
     }
 	
 
-	override public function destroy() {
+	override public function kill() {
 
 
 		if(tween != null){
@@ -70,7 +70,7 @@ class Turret extends Enemy
 		}
 
 
-		super.destroy();
+		super.kill();
 		
 	}
 	

@@ -2,7 +2,6 @@ package game;
 
 import flixel.FlxSprite;
 
-
 class Player extends FlxSprite
 {
 	var movement:Float = 0;
@@ -29,14 +28,13 @@ class Player extends FlxSprite
 
 	override public function update(elapsed:Float)
 	{
-		//trace(health, invincibilityFrames);
+		// trace(health, invincibilityFrames);
 
 		movement = 0;
 		movementy = 0;
 
-		//trace(health);
-
-		if ( (PlayState.boostper > 0)){
+		if ((PlayState.boostper > 0))
+		{
 			if (FlxG.keys.anyPressed([A, LEFT]))
 			{
 				movement -= 1;
@@ -63,17 +61,12 @@ class Player extends FlxSprite
 			isSpeeding = false;
 			if (FlxG.keys.anyPressed([SPACE]))
 			{
-
 				isSpeeding = true;
 				movementy *= 3.5;
 				movement *= 3.5;
 				color = FlxColor.ORANGE;
 				PlayState.boostper -= 1.2 * elapsed;
 			}
-
-
-
-
 		}
 
 		if ((movement != 0) && (movementy != 0))
@@ -104,9 +97,8 @@ class Player extends FlxSprite
 		invincibilityFrames = invincibilityFrames - elapsed;
 	}
 
-
-	public function hurtMe() {
-
+	public function hurtMe()
+	{
 		if (invincibilityFrames < 0)
 		{
 			trace("get hurt");

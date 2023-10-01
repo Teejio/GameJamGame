@@ -1,20 +1,19 @@
 package;
 
-import game.Player;
-import game.enemy.Simple;
-import game.enemy.Enemy;
-import game.enemy.Turret;
-import game.enemy.Archer;
-
-import flixel.effects.particles.FlxEmitter;
 import flash.display.Sprite;
 import flash.display.Stage;
 import flash.geom.Rectangle;
 import flixel.FlxState;
+import flixel.addons.ui.FlxUIBar as FlxBar;
+import flixel.effects.particles.FlxEmitter;
+import game.Player;
+import game.enemy.Archer;
+import game.enemy.Enemy;
+import game.enemy.Simple;
+import game.enemy.Turret;
 import lime.app.Application;
 import lime.ui.Window;
 import tjson.TJSON as Tjson;
-import flixel.addons.ui.FlxUIBar as FlxBar;
 
 class PlayState extends FlxState
 {
@@ -22,10 +21,10 @@ class PlayState extends FlxState
 
 	public var Simple:Simple;
 
-
 	var spr_levelTxt:Sprite;
 	var spr_BoostBar:Sprite;
 	var spr_BoostBarBG:Sprite;
+
 	public static var level:Int = 0;
 
 	var GAMECAM:FlxCamera;
@@ -57,8 +56,6 @@ class PlayState extends FlxState
 	{
 		super.create();
 
-
-
 		instance = this;
 
 		boostper = 5;
@@ -74,13 +71,12 @@ class PlayState extends FlxState
 		PAUSECAM.bgColor.alpha = 0;
 
 		FlxG.cameras.reset(GAMECAM);
-		 FlxG.cameras.add(HUDCAM, false);
+		FlxG.cameras.add(HUDCAM, false);
 		FlxG.cameras.add(PAUSECAM, false);
 
 		FlxG.camera.zoom = FlxG.width / (targetwidth / 2);
 
 		FlxG.camera.antialiasing = true;
-	
 
 		GAMECAM.bgColor = 0xff040524;
 
@@ -114,13 +110,12 @@ class PlayState extends FlxState
 			var dickhead = new Simple(item[0] * scaleX, item[1] * scaleY, FlxColor.RED);
 			// dickhead.pixelPerfectRender = true;
 			enemyGroup.add(dickhead);
-			
 		}
 
 		parsedata = leveldata.enemies.turret;
 		for (item in parsedata)
 		{
-			var dickhead = new Turret(item[0] * scaleX, item[1] * scaleY, FlxColor.BROWN );
+			var dickhead = new Turret(item[0] * scaleX, item[1] * scaleY, FlxColor.BROWN);
 			// dickhead.pixelPerfectRender = true;
 			enemyGroup.add(dickhead);
 		}
@@ -133,23 +128,18 @@ class PlayState extends FlxState
 			enemyGroup.add(dickhead);
 		}
 
-
-		
 		levelTxt = new FlxText(0, 0, 0, "Level " + Std.string(level), 15);
 		levelTxt.cameras = [HUDCAM];
-		//levelTxt.x = 250 - (levelTxt.width/2);
+		// levelTxt.x = 250 - (levelTxt.width/2);
 		levelTxt.color = FlxColor.WHITE;
 
-		//add(levelTxt);
+		// add(levelTxt);
 
-		boostBar = new FlxSprite(0,0).makeGraphic(480,20,FlxColor.PURPLE);
+		boostBar = new FlxSprite(0, 0).makeGraphic(480, 20, FlxColor.PURPLE);
 
+		boostBar.cameras = [HUDCAM];
 
-
-		
 		add(boostBar);
-
-
 
 		FlxG.camera.follow(player, TOPDOWN, 0.3);
 		FlxG.camera.minScrollX = -targetwidth;
@@ -190,7 +180,6 @@ class PlayState extends FlxState
 
 			Application.current.window.focus();
 
-
 			spr_levelTxt = new Sprite();
 			spr_BoostBar = new Sprite();
 			drawHud();
@@ -198,8 +187,8 @@ class PlayState extends FlxState
 			hudWindow.stage.addChild(spr_levelTxt);
 			hudWindow.stage.addChild(spr_BoostBar);
 		}
-		else if (frame > 3 ){
-
+		else if (frame > 3)
+		{
 			drawHud();
 		}
 		frame++;
@@ -226,11 +215,10 @@ class PlayState extends FlxState
 		super.draw();
 	}
 
-	public function emitParticle(x:Float, y:Float, color:Int, ?time:Float = 1){
+	public function emitParticle(x:Float, y:Float, color:Int, ?time:Float = 1)
+	{
+		var particles = new FlxEmitter(x, y, 20);
 
-
-		var particles = new FlxEmitter(x,y, 20);
-	
 		particles.lifespan.set(0.1, time);
 		particles.lifespan.active = true;
 		particles.launchMode = FlxEmitterMode.CIRCLE;
@@ -238,14 +226,12 @@ class PlayState extends FlxState
 		particles.scale.set(1, 1, 1, 1, 4, 4, 8, 8);
 		particles.alpha.set(1, 0.8, 0, 0);
 
-
-		
 		particles.start(true);
 		instance.add(particles);
-
 	}
 
-	function drawHud(){
+	function drawHud()
+	{
 		var rect = new Rectangle(HUDCAM.x, HUDCAM.y, HUDCAM.width, HUDCAM.height);
 
 		spr_levelTxt = new Sprite();
@@ -255,9 +241,7 @@ class PlayState extends FlxState
 		spr_levelTxt.x = 250 - (levelTxt.width / 2);
 		spr_levelTxt.y = 0;
 		spr_levelTxt.graphics.beginBitmapFill(levelTxt.pixels);
-		spr_levelTxt.graphics.drawRect(0, 0, levelTxt.pixels.width , levelTxt.pixels.height);
+		spr_levelTxt.graphics.drawRect(0, 0, levelTxt.pixels.width, levelTxt.pixels.height);
 		spr_levelTxt.graphics.endFill();
-
-
 	}
 }

@@ -207,7 +207,9 @@ class PlayState extends FlxState
 			hudWindow.close();
 			Application.current.window.close();
 		}
-		trace(boostBar.scale.x);
+		// trace(boostBar.scale.x);
+
+		drawHud();
 	}
 
 	override public function draw()
@@ -235,6 +237,7 @@ class PlayState extends FlxState
 		var rect = new Rectangle(HUDCAM.x, HUDCAM.y, HUDCAM.width, HUDCAM.height);
 
 		spr_levelTxt = new Sprite();
+		spr_BoostBar = new Sprite();
 		var rect = new Rectangle(levelTxt.x, levelTxt.y, levelTxt.width, levelTxt.height);
 
 		spr_levelTxt.scrollRect = rect;
@@ -243,5 +246,11 @@ class PlayState extends FlxState
 		spr_levelTxt.graphics.beginBitmapFill(levelTxt.pixels);
 		spr_levelTxt.graphics.drawRect(0, 0, levelTxt.pixels.width, levelTxt.pixels.height);
 		spr_levelTxt.graphics.endFill();
+
+		spr_BoostBar.scrollRect = rect;
+		spr_BoostBar.y = 10;
+		spr_BoostBar.graphics.beginBitmapFill(boostBar.pixels);
+		spr_BoostBar.graphics.drawRect(0, 0, Std.int(480 * (boostper / 5)), 20);
+		spr_BoostBar.graphics.endFill();
 	}
 }

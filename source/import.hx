@@ -7,6 +7,8 @@ import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import flixel.group.FlxSpriteGroup;
 import flixel.FlxObject;
+import flixel.tweens.FlxEase;
+import flixel.tweens.FlxTween;
 
 
 import openfl.utils.Assets;

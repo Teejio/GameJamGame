@@ -11,6 +11,12 @@ class Paths {
 		return gimmePath('images/$name.png', pathName);        
     }
 
+	inline public static function font(name:String, ?pathName:Null<String> = null)
+	{
+		return gimmePath('fonts/$name', pathName);
+	}
+
+
 	inline  public static function xml(name:String, ?pathName:Null<String> = null)
 	{
 		trace(FlxAtlasFrames.fromSparrow(image(name, pathName), gimmePath('images/$name.xml', pathName)));

@@ -4,6 +4,7 @@ import CustomButton;
 import PlayState;
 import TutorialState;
 import lime.app.Application;
+
 using flixel.util.FlxSpriteUtil;
 
 class TitleState extends FlxState
@@ -14,6 +15,8 @@ class TitleState extends FlxState
 	var timer:Float = 0;
 
 	var astro:FlxSprite;
+
+	var bg:FlxSprite;
 
 	var title:FlxSprite;
 
@@ -28,11 +31,13 @@ class TitleState extends FlxState
 		// Load the sprite's graphic to the cursor
 		FlxG.mouse.load(sprite.pixels);
 
-
-
 		FlxG.sound.playMusic("assets/music/mus_mainmenu.wav", 1, true);
 
 		FlxG.camera.bgColor = 0xff1a0d50;
+
+		bg = new FlxSprite(0, 0).loadGraphic(Paths.image("TITLEBACKGROUND"));
+
+		add(bg);
 
 		astro = new FlxSprite(FlxG.width, 0).loadGraphic(Paths.image("Astro"));
 
@@ -55,6 +60,7 @@ class TitleState extends FlxState
 
 		var start = new CustomButton(0, FlxG.height + 200, 100, 40, "Start Game", function()
 		{
+			FlxG.sound.playMusic("assets/music/mus_fullroom.wav", 1, true);
 			FlxG.switchState(new PlayState());
 		});
 

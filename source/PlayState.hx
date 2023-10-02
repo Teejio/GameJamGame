@@ -32,7 +32,7 @@ class PlayState extends FlxState
 	var spr_BoostBar:Sprite;
 	var spr_BoostBarBG:Sprite;
 
-	public static var level:Int = 6;
+	public static var level:Int = 1;
 
 	var GAMECAM:FlxCamera;
 	var HUDCAM:FlxCamera;
@@ -79,6 +79,18 @@ class PlayState extends FlxState
 	{
 		super.create();
 
+		if (FlxG.sound.music == null || level == 6) // don't restart the music if it's already playing
+		{
+			if (level == 6)
+			{
+				FlxG.sound.playMusic("assets/music/mus_crappyboss.wav", 1, true);
+			}
+			else
+			{
+				FlxG.sound.playMusic("assets/music/mus_fullroom.wav", 1, true);
+			}
+		}
+
 		FlxG.mouse.visible = false;
 		bgSprite = new FlxSprite(-2000, -1500);
 		bgSprite.loadGraphic("assets/images/game/bg.png");
@@ -92,8 +104,6 @@ class PlayState extends FlxState
 		boostper = 5;
 		stage = new Stage(Application.current.window, FlxColor.BLUE);
 		targetwidth = Std.int(1920);
-
-		FlxG.sound.playMusic("assets/music/mus_fullroom.mp3", 1, true);
 
 		Application.current.window.borderless = true;
 		GAMECAM = new FlxCamera();
@@ -218,7 +228,6 @@ class PlayState extends FlxState
 		hp3.loadGraphic(Paths.image("game/super"));
 		hp3.cameras = [HUDCAM];
 
-
 		add(hp1);
 
 		add(hp2);
@@ -264,7 +273,7 @@ class PlayState extends FlxState
 			hp1.visible = false;
 		}
 
-		if (Math.random() > 0.9999)
+		if (Math.random() > 0.999)
 		{
 			var power = new Power(player.x + ((Math.random() - 0.5) * 900), player.y + ((Math.random() - 0.5) * 900));
 			add(power);
@@ -277,7 +286,7 @@ class PlayState extends FlxState
 				width: 500,
 				height: 150,
 				borderless: true,
-				//resizable: false,
+				// resizable: false,
 				alwaysOnTop: true
 			});
 			hudWindow.x = Std.int(gameWidth / 2);
@@ -289,8 +298,6 @@ class PlayState extends FlxState
 			// hudWindow.stage.addChild(HUDCAM.flashSprite);
 
 			Application.current.window.focus();
-
-
 
 			spr_levelTxt = new Sprite();
 			spr_BoostBar = new Sprite();
@@ -329,7 +336,6 @@ class PlayState extends FlxState
 		if (enemyGroup.length == 0 && (!jetPackSpawn))
 		{
 			trace("you Win!!");
-			FlxG.sound.playMusic("assets/music/mus_emptyroom.mp3", 1, true);
 			var jetpack = new JetPack(player.x, player.y - (FlxG.width / 2));
 
 			add(jetpack);
@@ -395,7 +401,7 @@ class PlayState extends FlxState
 		trace("enemy = " + enemy);
 		if (enemy == "simple")
 		{
-			var dickhead = new Simple(xpos , ypos , FlxColor.RED);
+			var dickhead = new Simple(xpos, ypos, FlxColor.RED);
 			dickhead.loadGraphic("assets/images/game/simple.png");
 			// dickhead.pixelPerfectRender = true;
 			enemyGroup.add(dickhead);
@@ -403,7 +409,7 @@ class PlayState extends FlxState
 		}
 		else if (enemy == "archer")
 		{
-			var dickhead = new Archer(xpos , ypos, FlxColor.PURPLE);
+			var dickhead = new Archer(xpos, ypos, FlxColor.PURPLE);
 			dickhead.loadGraphic("assets/images/game/archer.png");
 			// dickhead.pixelPerfectRender = true;
 			enemyGroup.add(dickhead);
@@ -411,7 +417,7 @@ class PlayState extends FlxState
 		}
 		else if (enemy == "turret")
 		{
-			var dickhead = new Turret(xpos , ypos , FlxColor.BROWN);
+			var dickhead = new Turret(xpos, ypos, FlxColor.BROWN);
 			dickhead.loadGraphic("assets/images/game/turret.png");
 			// dickhead.pixelPerfectRender = true;
 			enemyGroup.add(dickhead);

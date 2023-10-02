@@ -11,7 +11,7 @@ class Boss extends Enemy
 
 	var attack:Bool = false;
 	var time:Float = 0;
-	var attackCooldown:Float = 10;
+	var attackCooldown:Float = 1.5;
 
 	var enemyGroup:FlxTypedSpriteGroup<Dynamic>;
 
@@ -19,8 +19,8 @@ class Boss extends Enemy
 	{
 		super(x, y, colorA);
 
-		backUpDst = 1000;
-		moveSpeed = 200;
+		backUpDst = 500;
+		moveSpeed = 500;
 	}
 
 	override public function update(elapsed:Float)
@@ -31,7 +31,7 @@ class Boss extends Enemy
 		{
 			attack = true;
 		}
-		if (time > (attackCooldown + 2))
+		if (time > (attackCooldown + 0.5))
 		{
 			attackfunc();
 		}
@@ -69,7 +69,8 @@ class Boss extends Enemy
 		tween = FlxTween.angle(this, -45, 0, 2.0, {ease: FlxEase.expoOut});
 	}
 
-	override  public function kill(){
+	override public function kill()
+	{
 		FlxG.switchState(new WinState());
 		super.kill();
 	}

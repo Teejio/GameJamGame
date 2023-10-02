@@ -57,6 +57,8 @@ class Enemy extends FlxSprite
 		}
 
 		PlayState.player.invincibilityFrames = 0.1;
+
+		FlxG.camera.shake(0.02,0.4,true);
 		// PlayState.enemyGroup.remove(this);
 		super.kill();
 	}

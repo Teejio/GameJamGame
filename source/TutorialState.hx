@@ -13,7 +13,10 @@ class TutorialState extends FlxState
 
 	var page:FlxSprite;
 
-	var title:FlxSprite;
+
+	var left:FlxSprite;
+
+	var right:FlxSprite;
 
     var pageNum = 0;
 
@@ -27,7 +30,7 @@ class TutorialState extends FlxState
 
 		page = new FlxSprite(0, 0);
 
-
+		
 		getPage();
 
 
@@ -37,6 +40,12 @@ class TutorialState extends FlxState
 
 		add(page);
 
+		left = new FlxSprite(60, 350).loadGraphic(Paths.image('tutorial/left'));
+		right = new FlxSprite(460, 350).loadGraphic(Paths.image('tutorial/right'));
+
+
+		add(left);
+		add(right);
 		var exit = new CustomButton(0, 0, 99, 40, "Title", function()
 		{
 			//PlayState.instance.hudWindow.close();
@@ -53,10 +62,10 @@ class TutorialState extends FlxState
     function getPage(){
 
 
-        pageNum = pageNum % 4;
+        pageNum = pageNum % 6;
 
         if (pageNum < 0) {
-            pageNum = 3;
+            pageNum = 5;
         }
 		page.loadGraphic(Paths.image('tutorial/${pageNum}'));
     }
@@ -77,5 +86,38 @@ class TutorialState extends FlxState
             pageNum += 1;
 			getPage();
 		}
+
+
+		left.scale.x = 0.5;
+		right.scale.x = 0.5;
+		left.alpha = 1;
+		right.alpha = 1;
+		if (FlxG.keys.anyPressed([A, LEFT]))
+		{
+			left.scale.x = 0.4;
+
+			left.alpha = 0.5;
+		}
+		if (FlxG.keys.anyPressed([D, RIGHT]))
+		{
+			right.scale.x = 0.4;
+
+			right.alpha = 0.5;
+
+			
+
+		}
+
+		left.scale.y = left.scale.x;
+		right.scale.y = right.scale.x;
+
+	//	left.updateHitbox();
+		left.centerOffsets();
+		left.centerOrigin();
+
+		//right.updateHitbox();
+		right.centerOffsets();
+		right.centerOrigin();
+
 	}
 }

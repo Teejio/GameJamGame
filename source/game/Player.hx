@@ -21,7 +21,7 @@ class Player extends FlxSprite
 		makeGraphic(100, 100, FlxColor.GREEN);
 		centerOffsets();
 		updateHitbox();
-		health = 3;
+		health = 5;
 	}
 
 	override public function update(elapsed:Float)
@@ -90,8 +90,9 @@ class Player extends FlxSprite
 			color = FlxColor.WHITE;
 		}
 
-		if (health == 0)
+		if (health < 1)
 		{
+			PlayState.instance.hudWindow.close();
 			FlxG.switchState(new DeathState());
 		}
 
@@ -104,6 +105,8 @@ class Player extends FlxSprite
 		{
 			trace("get hurt");
 			health -= 1;
+			FlxG.camera.shake(0.03, 0.5, true);
+			FlxG.camera.flash(FlxColor.RED, 0.5, true);
 			invincibilityFrames = 2;
 		}
 	}

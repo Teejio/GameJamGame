@@ -4,10 +4,12 @@ import flash.display.Sprite;
 import flash.display.Stage;
 import flash.geom.Rectangle;
 import flixel.FlxState;
+import flixel.FlxObject;
 import flixel.addons.ui.FlxUIBar as FlxBar;
 import flixel.effects.particles.FlxEmitter;
 import Effect;
 import game.Player;
+import JetPack;
 import game.enemy.Archer;
 import game.enemy.Enemy;
 import game.enemy.Simple;
@@ -15,7 +17,11 @@ import game.enemy.Turret;
 import lime.app.Application;
 import lime.ui.Window;
 import tjson.TJSON as Tjson;
+import Power;
+
 using flixel.util.FlxSpriteUtil;
+
+
 
 class PlayState extends FlxState
 {
@@ -27,7 +33,7 @@ class PlayState extends FlxState
 	var spr_BoostBar:Sprite;
 	var spr_BoostBarBG:Sprite;
 
-	public static var level:Int = 0;
+	public static var level:Int = 1;
 
 	var GAMECAM:FlxCamera;
 	var HUDCAM:FlxCamera;
@@ -59,6 +65,8 @@ class PlayState extends FlxState
 	var hudGroup:Array<Dynamic> = [];
 
 
+	var jetPackSpawn:Bool = false;
+	var jetPackScene:Bool = false;
 	override public function create()
 	{
 		super.create();
@@ -66,6 +74,7 @@ class PlayState extends FlxState
 		cameraCopySprite = new FlxSprite(0, 0);
 		cameraCopySprite.makeGraphic(500, 150, 0, true);
 		instance = this;
+		jetPackSpawn =  false;
 
 		boostper = 5;
 		stage = new Stage(Application.current.window, FlxColor.BLUE);
@@ -145,6 +154,7 @@ class PlayState extends FlxState
 		levelTxt.x = 250 - (levelTxt.width/2);
 		levelTxt.color = FlxColor.WHITE;
 
+		levelTxt.setFormat(Paths.font("title.ttf"),15, FlxColor.WHITE);
 		add(levelTxt);
 
 		boostBar = new FlxSprite( 10, 40).makeGraphic(480, 15, FlxColor.PURPLE);
@@ -183,6 +193,13 @@ class PlayState extends FlxState
 		boostBar.scale.x = boostper/5;
 		boostBar.updateHitbox();
 
+
+		if (Math.random() > 0.995){
+
+			var power = new Power(player.x + ((Math.random() - 0.5) * 900), player.y + ((Math.random() - 0.5) * 900) );
+			add(power);
+		}
+
 		if (frame == 3)
 		{
 			hudWindow = Application.current.createWindow({
@@ -190,6 +207,7 @@ class PlayState extends FlxState
 				width: 500,
 				height: 150,
 				borderless: true,
+				resizable: false,
 				alwaysOnTop: true
 			});
 			hudWindow.x = Std.int(gameWidth / 2);
@@ -218,19 +236,33 @@ class PlayState extends FlxState
 		FlxG.camera.zoom = FlxG.width / targetwidth;
 
 		// windowUpdate();
-		Application.current.window.move(Std.int((gameWidth / 2) + ((FlxG.camera.scroll.x + (FlxG.width / 2)) * FlxG.camera.zoom) + (FlxG.width / -2)),
-			Std.int((gameHeight / 2) + ((FlxG.camera.scroll.y + (FlxG.height / 2)) * FlxG.camera.zoom) + (FlxG.height / -2)));
+
+		if (!jetPackScene){
+			Application.current.window.move(Std.int((gameWidth / 2) + ((FlxG.camera.scroll.x + (FlxG.width / 2)) * FlxG.camera.zoom) + (FlxG.width / -2)),
+				Std.int((gameHeight / 2) + ((FlxG.camera.scroll.y + (FlxG.height / 2)) * FlxG.camera.zoom) + (FlxG.height / -2)));
+		}
+		
 
 		// Application.current.window.x = 	Std.int(Application.current.window.x/2);
 		super.update(elapsed);
 
-		if (FlxG.keys.anyPressed([X, ESCAPE]))
+		if (FlxG.keys.anyPressed([X, ESCAPE, ENTER]))
 		{
 			openSubState(new PauseSubState());
 		}
 		// trace(boostBar.scale.x);
 
 		//drawHud();
+
+		if (enemyGroup.length == 0 && (!jetPackSpawn)){
+
+			trace("you Win!!");
+			FlxG.sound.playMusic("assets/music/mus_emptyroom.mp3", 1, true);
+			var jetpack = new JetPack(player.x, player.y - (FlxG.width/2));
+
+			add(jetpack);
+			jetPackSpawn = true;
+		}
 	}
 
 	override public function draw()
@@ -250,9 +282,9 @@ class PlayState extends FlxState
 		particles.alpha.set(1, 0.8, 0, 0);
 
 		particles.start(true);
-
+		instance.add(particles);
 		return particles;
-		//instance.add(particles);
+		
 	}
 
 	function drawHud()
@@ -274,5 +306,22 @@ class PlayState extends FlxState
 		spr_levelTxt.graphics.endFill();
 
 
+	}
+
+	public function doEnding(){
+
+		jetPackScene = true;
+		FlxG.camera.follow(new FlxObject(player.x, player.y), TOPDOWN, 0.3);
+
+
+		FlxTween.tween(player, {y: player.y - 1000 }, 3.0, {ease: FlxEase.expoIn, onComplete:function (tween:FlxTween){
+
+			
+			
+			level += 1;
+			PlayState.instance.hudWindow.close();
+			FlxG.switchState(new PlayState());
+
+		}});
 	}
 }

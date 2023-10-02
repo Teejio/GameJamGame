@@ -51,12 +51,14 @@ class PauseSubState extends FlxSubState {
 
 		var cont = new CustomButton(50, 100 , 100, 40, "Continue", function()
 		{
+			FlxG.mouse.visible = false;
 			close();
 		});
 
 		add(cont);
 		var restart = new CustomButton(60, 150, 100, 40, "Restart", function()
 		{
+			FlxG.mouse.visible = false;
 			PlayState.instance.hudWindow.close();
 			FlxG.switchState(new PlayState());
 		});

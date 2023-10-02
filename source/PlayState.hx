@@ -32,7 +32,7 @@ class PlayState extends FlxState
 	var spr_BoostBar:Sprite;
 	var spr_BoostBarBG:Sprite;
 
-	public static var level:Int = 0;
+	public static var level:Int = 6;
 
 	var GAMECAM:FlxCamera;
 	var HUDCAM:FlxCamera;
@@ -79,6 +79,7 @@ class PlayState extends FlxState
 	{
 		super.create();
 
+		FlxG.mouse.visible = false;
 		bgSprite = new FlxSprite(-2000, -1500);
 		bgSprite.loadGraphic("assets/images/game/bg.png");
 		add(bgSprite);
@@ -216,6 +217,13 @@ class PlayState extends FlxState
 		hp3 = new FlxSprite(150, 60);
 		hp3.loadGraphic(Paths.image("game/super"));
 		hp3.cameras = [HUDCAM];
+
+
+		add(hp1);
+
+		add(hp2);
+
+		add(hp3);
 	}
 
 	var frame = 0;
@@ -269,7 +277,7 @@ class PlayState extends FlxState
 				width: 500,
 				height: 150,
 				borderless: true,
-				resizable: false,
+				//resizable: false,
 				alwaysOnTop: true
 			});
 			hudWindow.x = Std.int(gameWidth / 2);
@@ -282,11 +290,7 @@ class PlayState extends FlxState
 
 			Application.current.window.focus();
 
-			add(hp1);
 
-			add(hp2);
-
-			add(hp3);
 
 			spr_levelTxt = new Sprite();
 			spr_BoostBar = new Sprite();
@@ -391,26 +395,26 @@ class PlayState extends FlxState
 		trace("enemy = " + enemy);
 		if (enemy == "simple")
 		{
-			var dickhead = new Simple(xpos * scaleX, ypos * scaleY, FlxColor.RED);
+			var dickhead = new Simple(xpos , ypos , FlxColor.RED);
 			dickhead.loadGraphic("assets/images/game/simple.png");
 			// dickhead.pixelPerfectRender = true;
-			instance.enemyGroup.add(dickhead);
+			enemyGroup.add(dickhead);
 			trace("spawned " + enemy);
 		}
 		else if (enemy == "archer")
 		{
-			var dickhead = new Archer(xpos * scaleX, ypos * scaleY, FlxColor.PURPLE);
+			var dickhead = new Archer(xpos , ypos, FlxColor.PURPLE);
 			dickhead.loadGraphic("assets/images/game/archer.png");
 			// dickhead.pixelPerfectRender = true;
-			instance.enemyGroup.add(dickhead);
+			enemyGroup.add(dickhead);
 			trace("spawned " + enemy);
 		}
 		else if (enemy == "turret")
 		{
-			var dickhead = new Turret(xpos * scaleX, ypos * scaleY, FlxColor.BROWN);
+			var dickhead = new Turret(xpos , ypos , FlxColor.BROWN);
 			dickhead.loadGraphic("assets/images/game/turret.png");
 			// dickhead.pixelPerfectRender = true;
-			instance.enemyGroup.add(dickhead);
+			enemyGroup.add(dickhead);
 			trace("spawned " + enemy);
 		}
 		else

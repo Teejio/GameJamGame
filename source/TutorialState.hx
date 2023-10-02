@@ -46,7 +46,7 @@ class TutorialState extends FlxState
 
 		add(left);
 		add(right);
-		var exit = new CustomButton(0, 0, 99, 40, "Title", function()
+		var exit = new CustomButton(0, 0, 99, 40, "Press Escape", function()
 		{
 			//PlayState.instance.hudWindow.close();
 			FlxG.switchState(new TitleState());
@@ -74,6 +74,7 @@ class TutorialState extends FlxState
 	{
 		super.update(elapsed);
 
+		FlxG.mouse.visible = false;
 		timer += elapsed;
 
 		if (FlxG.keys.anyJustPressed([A, LEFT]))
@@ -96,6 +97,12 @@ class TutorialState extends FlxState
 		{
 			left.scale.x = 0.4;
 
+			left.alpha = 0.5;
+		}
+		if (FlxG.keys.anyPressed([ESCAPE, X]))
+		{
+			left.scale.x = 0.4;
+			FlxG.switchState(new TitleState());
 			left.alpha = 0.5;
 		}
 		if (FlxG.keys.anyPressed([D, RIGHT]))

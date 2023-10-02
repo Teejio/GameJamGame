@@ -55,17 +55,22 @@ class Boss extends Enemy
 
 		if (enemychoice == 1)
 		{
-			playstate.spawnEnemy("simple", x, y);
+			PlayState.instance.spawnEnemy("simple", x, y);
 		}
 		else if (enemychoice == 2)
 		{
-			playstate.spawnEnemy("archer", x, y);
+			PlayState.instance.spawnEnemy("archer", x, y);
 		}
 		else if (enemychoice == 3)
 		{
-			playstate.spawnEnemy("turret", x, y);
+			PlayState.instance.spawnEnemy("turret", x, y);
 		}
 
 		tween = FlxTween.angle(this, -45, 0, 2.0, {ease: FlxEase.expoOut});
+	}
+
+	override  public function kill(){
+		FlxG.switchState(new WinState());
+		super.kill();
 	}
 }

@@ -4,6 +4,7 @@ import CustomButton;
 import PlayState;
 import TutorialState;
 import lime.app.Application;
+using flixel.util.FlxSpriteUtil;
 
 class TitleState extends FlxState
 {
@@ -19,6 +20,15 @@ class TitleState extends FlxState
 	override function create()
 	{
 		super.create();
+
+		var sprite = new FlxSprite();
+		sprite.makeGraphic(15, 15, FlxColor.TRANSPARENT);
+		sprite.drawCircle();
+
+		// Load the sprite's graphic to the cursor
+		FlxG.mouse.load(sprite.pixels);
+
+
 
 		FlxG.sound.playMusic("assets/music/mus_mainmenu.wav", 1, true);
 

@@ -28,6 +28,7 @@ class CustomButton extends FlxUIButton{
     public function new (x:Float , y:Float, w:Float, h:Int, text:String, ?OnClick:() -> Void){
 
 
+		FlxG.mouse.visible = true;
 
         var icon = new FlxText( 0, 0, 0 ,text, Std.int((w-2) / (text.length/1.4)), true);
 

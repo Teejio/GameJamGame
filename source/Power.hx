@@ -1,30 +1,30 @@
 class Power extends FlxSprite
 {
+	public var type:String;
 
-    public var type:String;
 	public function new(x:Float, y:Float)
 	{
 		super(x, y);
 
-		if (Math.random() > 0.9){
-
-            type = "super";
-			makeGraphic(100, 100, FlxColor.YELLOW);
-        }
-		else if (Math.random() > 0.5){
-
+		if (Math.random() > 0.95)
+		{
+			type = "super";
+			loadGraphic("assets/images/game/super.png");
+		}
+		else if (Math.random() > 0.5)
+		{
 			type = "health";
-			makeGraphic(100, 100, FlxColor.LIME);
-        }
-        else
-        {
+			loadGraphic("assets/images/game/health.png");
+		}
+		else
+		{
 			type = "fuel";
-			makeGraphic(100, 100, FlxColor.PINK);
-        }
+			loadGraphic("assets/images/game/fuel.png");
+		}
 
-        velocity.x = (Math.random() - 0.5) * 1000;
+		velocity.x = (Math.random() - 0.5) * 1000;
 		velocity.y = (Math.random() - 0.5) * 1000;
-		
+
 		centerOffsets();
 		updateHitbox();
 	}
@@ -39,11 +39,10 @@ class Power extends FlxSprite
 			}
 			else if (type == "health")
 			{
-
-				if (PlayState.player.health != 5){
+				if (PlayState.player.health != 5)
+				{
 					PlayState.player.health += 1;
 				}
-				
 			}
 			else
 			{
@@ -51,17 +50,15 @@ class Power extends FlxSprite
 				{
 					PlayState.boostper += 1;
 				}
-				else {
-
+				else
+				{
 					PlayState.boostper = 5;
 				}
 			}
 
-
 			super.update(elapsed);
 			kill();
 		}
-
 	}
 
 	override public function kill()

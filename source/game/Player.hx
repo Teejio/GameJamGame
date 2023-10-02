@@ -18,10 +18,10 @@ class Player extends FlxSprite
 		//  drag.x = 700;
 
 		//   drag.y = 700;
-		makeGraphic(100, 100, FlxColor.GREEN);
+		loadGraphic("assets/images/game/player.png");
 		centerOffsets();
 		updateHitbox();
-		health = 5;
+		health = 3;
 	}
 
 	override public function update(elapsed:Float)
@@ -103,8 +103,8 @@ class Player extends FlxSprite
 	{
 		if (invincibilityFrames < 0)
 		{
-			trace("get hurt");
 			health -= 1;
+			trace("health: " + health);
 			FlxG.camera.shake(0.03, 0.5, true);
 			FlxG.camera.flash(FlxColor.RED, 0.5, true);
 			invincibilityFrames = 2;

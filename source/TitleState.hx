@@ -50,17 +50,17 @@ class TitleState extends FlxState
 
 		add(start);
 
-		var tutorial = new CustomButton(0, FlxG.height + 300, 99, 40, "How to Play",  function()
+		var tutorial = new CustomButton(0, FlxG.height + 300, 99, 40, "How to Play", function()
 		{
 			FlxG.switchState(new TutorialState());
 		});
 
 		add(tutorial);
 
-		var close = new CustomButton(0, FlxG.height + 500, 101, 40, "Close Game", function (){
+		var close = new CustomButton(0, FlxG.height + 500, 101, 40, "Close Game", function()
+		{
 			Application.current.window.close();
 		});
-
 
 		add(close);
 
@@ -69,7 +69,7 @@ class TitleState extends FlxState
 
 		FlxTween.tween(start, {y: 200, x: 25}, time, {ease: easeFunc});
 		FlxTween.tween(tutorial, {y: 265, x: 50}, time, {ease: easeFunc, startDelay: 0.1});
-		//FlxTween.tween(setting, {y: 330, x: 75}, time, {ease: easeFunc, startDelay: 0.2});
+		// FlxTween.tween(setting, {y: 330, x: 75}, time, {ease: easeFunc, startDelay: 0.2});
 		FlxTween.tween(close, {y: 395, x: 100}, time, {ease: easeFunc, startDelay: 0.3});
 	}
 

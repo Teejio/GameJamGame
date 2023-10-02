@@ -12,6 +12,7 @@ import flixel.addons.ui.FlxUIBar as FlxBar;
 import flixel.effects.particles.FlxEmitter;
 import game.Player;
 import game.enemy.Archer;
+import game.enemy.Boss;
 import game.enemy.Enemy;
 import game.enemy.Simple;
 import game.enemy.Turret;
@@ -71,6 +72,9 @@ class PlayState extends FlxState
 	var jetPackSpawn:Bool = false;
 	var jetPackScene:Bool = false;
 
+	var scaleX:Float = 0;
+	var scaleY:Float = 0;
+
 	override public function create()
 	{
 		super.create();
@@ -119,8 +123,8 @@ class PlayState extends FlxState
 
 		var leveldata = Tjson.parse(File.getContent('assets/data/levels/level${Std.string(level)}.json'));
 
-		var scaleX = targetwidth / 100;
-		var scaleY = (stage.fullScreenHeight / 100) * 1.2;
+		scaleX = targetwidth / 100;
+		scaleY = (stage.fullScreenHeight / 100) * 1.2;
 
 		var parsedata:Array<Array<Dynamic>> = [];
 
@@ -159,6 +163,15 @@ class PlayState extends FlxState
 			enemyGroup.add(dickhead);
 		}
 
+		parsedata = leveldata.enemies.boss;
+		for (item in parsedata)
+		{
+			var dickhead = new Boss(item[0] * scaleX, item[1] * scaleY, FlxColor.BLACK);
+			dickhead.loadGraphic("assets/images/game/bigboss.png");
+			// dickhead.pixelPerfectRender = true;
+			enemyGroup.add(dickhead);
+		}
+
 		levelTxt = new FlxText(0, 10, 0, "Level " + Std.string(level), 15);
 		levelTxt.cameras = [HUDCAM];
 		levelTxt.x = 250 - (levelTxt.width / 2);
@@ -192,16 +205,16 @@ class PlayState extends FlxState
 
 		HUDCAM.alpha = 0.0005;
 
-		hp1 = new FlxSprite(-25, 40);
-		hp1.loadGraphic(Paths.image("game/hp"));
+		hp1 = new FlxSprite(0, 60);
+		hp1.loadGraphic(Paths.image("game/super"));
 		hp1.cameras = [HUDCAM];
 
-		hp2 = new FlxSprite(50, 40);
-		hp2.loadGraphic(Paths.image("game/hp"));
+		hp2 = new FlxSprite(75, 60);
+		hp2.loadGraphic(Paths.image("game/super"));
 		hp2.cameras = [HUDCAM];
 
-		hp3 = new FlxSprite(125, 40);
-		hp3.loadGraphic(Paths.image("game/hp"));
+		hp3 = new FlxSprite(150, 60);
+		hp3.loadGraphic(Paths.image("game/super"));
 		hp3.cameras = [HUDCAM];
 	}
 
@@ -371,5 +384,38 @@ class PlayState extends FlxState
 				FlxG.switchState(new PlayState());
 			}
 		});
+	}
+
+	public function spawnEnemy(enemy:String, xpos:Float, ypos:Float)
+	{
+		trace("enemy = " + enemy);
+		if (enemy == "simple")
+		{
+			var dickhead = new Simple(xpos * scaleX, ypos * scaleY, FlxColor.RED);
+			dickhead.loadGraphic("assets/images/game/simple.png");
+			// dickhead.pixelPerfectRender = true;
+			instance.enemyGroup.add(dickhead);
+			trace("spawned " + enemy);
+		}
+		else if (enemy == "archer")
+		{
+			var dickhead = new Archer(xpos * scaleX, ypos * scaleY, FlxColor.PURPLE);
+			dickhead.loadGraphic("assets/images/game/archer.png");
+			// dickhead.pixelPerfectRender = true;
+			instance.enemyGroup.add(dickhead);
+			trace("spawned " + enemy);
+		}
+		else if (enemy == "turret")
+		{
+			var dickhead = new Turret(xpos * scaleX, ypos * scaleY, FlxColor.BROWN);
+			dickhead.loadGraphic("assets/images/game/turret.png");
+			// dickhead.pixelPerfectRender = true;
+			instance.enemyGroup.add(dickhead);
+			trace("spawned " + enemy);
+		}
+		else
+		{
+			trace("nobody spawned");
+		}
 	}
 }

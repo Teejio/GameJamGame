@@ -24,7 +24,7 @@ class Archer extends Enemy
 	{
 		time += elapsed;
 
-		if ((time > attackCooldown) && (FlxMath.distanceBetween(this, PlayState.player) < 500))
+		if ((time > attackCooldown) && (FlxMath.distanceBetween(this, PlayState.player) < 700))
 		{
 			time = 0;
 			attack();

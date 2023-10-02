@@ -9,12 +9,12 @@ class Power extends FlxSprite
 		if (Math.random() > 0.95)
 		{
 			type = "super";
-			loadGraphic("assets/images/game/super.png");
+			loadGraphic("assets/images/game/health.png");
 		}
 		else if (Math.random() > 0.5)
 		{
 			type = "health";
-			loadGraphic("assets/images/game/health.png");
+			loadGraphic("assets/images/game/hp.png");
 		}
 		else
 		{
@@ -35,11 +35,11 @@ class Power extends FlxSprite
 		{
 			if (type == "super")
 			{
-				PlayState.player.health = 5;
+				PlayState.player.health = 3;
 			}
 			else if (type == "health")
 			{
-				if (PlayState.player.health != 5)
+				if (PlayState.player.health != 3)
 				{
 					PlayState.player.health += 1;
 				}
